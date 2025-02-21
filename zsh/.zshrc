@@ -35,7 +35,7 @@ zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 
-eval "$(oh-my-posh init zsh --config ~/.config/omp/space.toml)"
+eval "$(oh-my-posh init zsh --config ~/.config/omp/zen.toml)"
 #eval "$(starship init zsh)"
 #export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
@@ -74,6 +74,7 @@ alias lzd='lazydocker'
 alias wc='warp-cli connect'
 alias wd='warp-cli disconnect'
 alias x='exit'
+alias ls="eza --icons=always"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
@@ -82,4 +83,4 @@ source <(fzf --zsh)
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-. "$HOME/.local/bin/env"
+export PATH=$PATH:~/.local/bin
