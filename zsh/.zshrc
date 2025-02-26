@@ -23,9 +23,9 @@ zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::archlinux
-zinit snippet OMZP::aws
-zinit snippet OMZP::kubectl
-zinit snippet OMZP::kubectx
+#zinit snippet OMZP::aws
+#zinit snippet OMZP::kubectl
+#zinit snippet OMZP::kubectx
 zinit snippet OMZP::command-not-found
 
 # Load completions
@@ -43,7 +43,7 @@ eval "$(oh-my-posh init zsh --config ~/.config/omp/zen.toml)"
 bindkey -e
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
-bindkey '^[w' kill-region/home/deffa/
+bindkey '^[w' kill-region
 
 # History
 HISTSIZE=5000
