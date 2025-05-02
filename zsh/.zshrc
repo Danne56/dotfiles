@@ -82,5 +82,4 @@ source <(fzf --zsh)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-
-export PATH=$PATH:~/.local/bin
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
