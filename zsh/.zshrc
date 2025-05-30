@@ -1,4 +1,14 @@
-ZSH_DISABLE_COMPFIX=true
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -10,6 +20,16 @@ fi
 
 # Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
+
+# Add in Powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# Add in fzf
+zi ice from"gh-r" as"program"
+zi light junegunn/fzf
+
+# Add in Homebrew
+zinit ice depth=1; zinit light Homebrew/brew
 
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
@@ -34,8 +54,9 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-eval "$(oh-my-posh init zsh --config ~/.config/omp/zen.toml)"
+# eval "$(oh-my-posh init zsh --config ~/.config/omp/zen.toml)"
 #eval "$(starship init zsh)"
 #export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
@@ -82,4 +103,4 @@ source <(fzf --zsh)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+. "$HOME/.local/bin/env"
