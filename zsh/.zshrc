@@ -9,6 +9,14 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -27,9 +35,6 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 # Add in fzf
 zi ice from"gh-r" as"program"
 zi light junegunn/fzf
-
-# Add in Homebrew
-zinit ice depth=1; zinit light Homebrew/brew
 
 # Add in zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
@@ -55,10 +60,6 @@ zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# eval "$(oh-my-posh init zsh --config ~/.config/omp/zen.toml)"
-#eval "$(starship init zsh)"
-#export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
 # Keybindings
 bindkey -e
@@ -92,7 +93,7 @@ alias vim='nvim'
 alias c='clear'
 alias z='zoxide'
 alias lzd='lazydocker'
-alias wc='warp-cli connect'
+alias cw='warp-cli connect'
 alias wd='warp-cli disconnect'
 alias x='exit'
 alias ls="eza --icons=always"
@@ -103,4 +104,15 @@ source <(fzf --zsh)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-. "$HOME/.local/bin/env"
+source "$HOME/.local/bin/env"
+export LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/node@22/lib"
+export CPPFLAGS="-I/home/linuxbrew/.linuxbrew/opt/node@22/include"
+export PATH="/home/linuxbrew/.linuxbrew/opt/node@22/bin:$PATH"
+export EDITOR=micro
+
+# bun completions
+[ -s "/home/deffa/.bun/_bun" ] && source "/home/deffa/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
