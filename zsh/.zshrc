@@ -9,6 +9,14 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+if [[ -f "$HOME/.local/bin/env" ]] then
+  source "$HOME/.local/bin/env"
+fi
+
+if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -104,11 +112,11 @@ source <(fzf --zsh)
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-source "$HOME/.local/bin/env"
 export LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/node@22/lib"
 export CPPFLAGS="-I/home/linuxbrew/.linuxbrew/opt/node@22/include"
 export PATH="/home/linuxbrew/.linuxbrew/opt/node@22/bin:$PATH"
 export EDITOR=micro
+export MICRO_TRUECOLOR=1
 
 # bun completions
 [ -s "/home/deffa/.bun/_bun" ] && source "/home/deffa/.bun/_bun"
