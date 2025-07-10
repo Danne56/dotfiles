@@ -1,5 +1,8 @@
 {
+    "autosu": true,
     "clipboard": "terminal",
     "colorscheme": "catppuccin-mocha",
-    "mkparents": true
+    "mkparents": true,
+    "rmtrailingws": true,
+    "tabsize": 2
 }
