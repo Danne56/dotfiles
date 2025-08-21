@@ -4,5 +4,6 @@
     "colorscheme": "catppuccin-mocha",
     "mkparents": true,
     "rmtrailingws": true,
+    "tabmovement": true,
     "tabsize": 2
 }

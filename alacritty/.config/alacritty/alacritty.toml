@@ -1,0 +1,26 @@
+[env]
+TERM = "xterm-256color"
+
+[window]
+padding.x = 10
+padding.y = 10
+
+decorations = "Buttonless"
+
+opacity = 0.9
+blur = true
+
+option_as_alt = "Both"
+
+[font]
+normal.family = "JetBrainsMono NF"
+
+size = 13
+
+[general]
+import = [
+  "~/.config/alacritty/themes/coolnight.toml"
+]
+
+[selection]
+save_to_clipboard = true
