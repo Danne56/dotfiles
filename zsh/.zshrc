@@ -5,16 +5,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
-
 if [[ -f "$HOME/.local/bin/env" ]] then
   source "$HOME/.local/bin/env"
 fi
 
 if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 function y() {
@@ -69,6 +69,13 @@ zinit cdreplay -q
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Make zsh autocomplete with up arrow
+autoload -Uz history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "$terminfo[kcuu1]" history-beginning-search-backward-end
+bindkey "$terminfo[kcud1]" history-beginning-search-forward-end
+
 # Keybindings
 bindkey -e
 bindkey '^p' history-search-backward
@@ -105,6 +112,7 @@ alias cw='warp-cli connect'
 alias wd='warp-cli disconnect'
 alias x='exit'
 alias ls="eza --icons=always"
+alias kubectl="minikube kubectl --"
 
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
