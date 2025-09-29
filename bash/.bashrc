@@ -1,6 +1,4 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 case $- in
@@ -8,24 +6,45 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# Source environment file
+if [[ -f "$HOME/.local/bin/env" ]]; then
+  source "$HOME/.local/bin/env"
+fi
+
+# Install Homebrew if not present
+if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Set up Homebrew environment
+if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# Yazi function for directory navigation
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+# History settings
+HISTSIZE=5000
+HISTFILESIZE=$HISTSIZE
+HISTCONTROL=ignoreboth:erasedups
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+# Enable globstar for bash 4.0+
+shopt -s globstar 2> /dev/null
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -76,38 +95,35 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
 
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
+# Aliases
+alias ls="eza --icons=always"
+alias vim='nvim'
+alias c='clear'
+alias z='zoxide'
+alias lzd='lazydocker'
+alias cw='warp-cli connect'
+alias wd='warp-cli disconnect'
+alias x='exit'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias kubectl="minikube kubectl --"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -116,23 +132,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#eval "$(starship init bash)"
-
-
-. "$HOME/.local/bin/env"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/tmp/_MEI3Bqelb/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/tmp/_MEI3Bqelb/etc/profile.d/conda.sh" ]; then
-        . "/tmp/_MEI3Bqelb/etc/profile.d/conda.sh"
-    else
-        export PATH="/tmp/_MEI3Bqelb/bin:$PATH"
-    fi
+# Set up fzf key bindings and fuzzy completion
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --bash)
 fi
-unset __conda_setup
-# <<< conda initialize <<<
 
+# Shell integrations
+if command -v zoxide >/dev/null 2>&1; then
+    eval "$(zoxide init --cmd cd bash)"
+fi
+
+# Environment variables
+export LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/node@22/lib"
+export CPPFLAGS="-I/home/linuxbrew/.linuxbrew/opt/node@22/include"
+export PATH="/home/linuxbrew/.linuxbrew/opt/node@22/bin:$PATH"
+export EDITOR=micro
+export MICRO_TRUECOLOR=1
+
+# bun completions
+[ -s "/home/deffa/.bun/_bun" ] && source "/home/deffa/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
