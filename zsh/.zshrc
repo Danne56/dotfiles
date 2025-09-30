@@ -5,18 +5,22 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Load env
 if [[ -f "$HOME/.local/bin/env" ]] then
   source "$HOME/.local/bin/env"
 fi
 
+# Install Homebrew if Not Present Already
 if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# Load brew
 if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]] then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+# Shortcut to Enable Yazi with pwd On Quit
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
@@ -112,6 +116,11 @@ alias cw='warp-cli connect'
 alias wd='warp-cli disconnect'
 alias x='exit'
 alias ls="eza --icons=always"
+# alias ls='eza -lh --group-directories-first --icons=auto'
+alias lsa='ls -a'
+alias lt='eza --tree --level=2 --long --icons --git'
+alias lta='lt -a'
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 alias kubectl="minikube kubectl --"
 
 # Set up fzf key bindings and fuzzy completion

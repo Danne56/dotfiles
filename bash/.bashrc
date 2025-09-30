@@ -112,6 +112,9 @@ alias x='exit'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias lsa='ls -a'
+alias lt='eza --tree --level=2 --long --icons --git'
+alias lta='lt -a'
 alias kubectl="minikube kubectl --"
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -135,6 +138,11 @@ fi
 # Set up fzf key bindings and fuzzy completion
 if command -v fzf >/dev/null 2>&1; then
     source <(fzf --bash)
+fi
+
+# fzf alias (if fzf and bat are installed)
+if command -v fzf &> /dev/null && command -v bat &> /dev/null; then
+    alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 fi
 
 # Shell integrations
