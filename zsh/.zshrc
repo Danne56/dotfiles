@@ -14,6 +14,7 @@ fi
 # Editor Config
 export EDITOR=micro
 export MICRO_TRUECOLOR=1
+export PATH="$PATH:/home/deffa/.config/composer/vendor/bin"
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
@@ -79,6 +80,11 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 
+# Line Buffer Editor
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
@@ -90,9 +96,10 @@ eval "$(zoxide init --cmd cd zsh)"
 alias c='clear'
 alias x='exit'
 alias vim='nvim'
+alias p='ping 8.8.8.8'
 
 # Eza (Better ls)
-alias ls="eza --icons=always"
+alias ls="eza --icons=auto --group-directories-first"
 alias lsa='ls -a'
 alias lt='eza --tree --level=2 --long --icons --git'
 alias lta='lt -a'
@@ -112,6 +119,30 @@ function y() {
     [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
     rm -f -- "$tmp"
 }
+
+# Custom Widgets
+# Clear screen but keep current command buffer
+function clear-screen-and-scrollback() {
+  echoti civis >"$TTY"
+  printf '%b' '\e[H\e[2J\e[3J' >"$TTY"
+  echoti cnorm >"$TTY"
+  zle .reset-prompt
+}
+zle -N clear-screen-and-scrollback
+bindkey '^Xl' clear-screen-and-scrollback
+
+# Hotkey Insertions - Text Snippets
+# Insert git commit template (Ctrl+X, G, C)
+# \C-b moves cursor back one position
+bindkey -s '^Xgc' 'git commit -m ""\C-b'
+
+# More examples:
+bindkey -s '^Xgp' 'git push origin '
+bindkey -s '^Xgs' 'git status\n'
+bindkey -s '^Xgl' 'git log --oneline -n 10\n'
+bindkey -s '^Xdu' 'docker compose up -d'
+bindkey -s '^Xdb' 'docker compose up -d --build'
+bindkey -s '^Xdd' 'docker compose down'
 
 # Load Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -48,3 +48,6 @@
         # conflictstyle = zdiff3
 [pull]
         rebase = true
+[user]
+	name = Danne56
+	email = 134295385+Danne56@users.noreply.github.com
