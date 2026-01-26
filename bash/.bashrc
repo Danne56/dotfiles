@@ -11,11 +11,6 @@ if [[ -f "$HOME/.local/bin/env" ]]; then
   source "$HOME/.local/bin/env"
 fi
 
-# Install Homebrew if not present
-if [[ ! -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
 # Set up Homebrew environment
 if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -121,11 +116,6 @@ alias kubectl="minikube kubectl --"
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -151,15 +141,18 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 
 # Environment variables
-export LDFLAGS="-L/home/linuxbrew/.linuxbrew/opt/node@22/lib"
-export CPPFLAGS="-I/home/linuxbrew/.linuxbrew/opt/node@22/include"
-export PATH="/home/linuxbrew/.linuxbrew/opt/node@22/bin:$PATH"
 export EDITOR=micro
 export MICRO_TRUECOLOR=1
 
-# bun completions
-[ -s "/home/deffa/.bun/_bun" ] && source "/home/deffa/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# Auto-start Tmux
+# if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
+#    if tmux has-session -t ${USER} 2>/dev/null; then
+#          # Session exists: Open a new window in the current directory ($PWD), then attach
+#          tmux new-window -t ${USER}: -c "${PWD}"
+#          exec tmux attach-session -t ${USER}
+#       else
+#          # No session: Create a new one (it will automatically use $PWD)
+#          exec tmux new-session -s ${USER}
+#       fi
+#    fi
+# fi
