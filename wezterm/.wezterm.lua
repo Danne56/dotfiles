@@ -21,6 +21,7 @@ config.freetype_render_target = "HorizontalLcd"
 config.enable_tab_bar = false
 -- config.window_decorations = "RESIZE"
 -- config.window_background_opacity = 0.9
+-- config.prefer_egl = true
 
 -- Custom mouse behavior
 config.mouse_bindings = {
@@ -47,10 +48,10 @@ config.keys = {
     mods = "CTRL|SHIFT",
     action = act.ToggleFullScreen,
   },
-  
+
   { key = 'Enter',
   	mods = 'ALT',
-  	action = wezterm.action.DisableDefaultAssignment 
+  	action = wezterm.action.DisableDefaultAssignment
   },
   -- Split horizontally (bawah)
   {
@@ -59,7 +60,7 @@ config.keys = {
     action = act.SplitVertical({ domain = "CurrentPaneDomain" }),
   },
 
-  -- Split vertically (kanan) 
+  -- Split vertically (kanan)
   {
     key = "f",
     mods = "CTRL|SHIFT",

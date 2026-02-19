@@ -1,6 +1,5 @@
 {
     "autosu": true,
-    "clipboard": "terminal",
     "colorscheme": "catppuccin-mocha",
     "mkparents": true,
     "rmtrailingws": true,

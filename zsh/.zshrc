@@ -1,8 +1,10 @@
+# --- Instant Prompt ---
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# --- Environment ---
 # Load custom env file if it exists
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
@@ -16,6 +18,7 @@ export EDITOR=micro
 export MICRO_TRUECOLOR=1
 export PATH="$PATH:/home/deffa/.config/composer/vendor/bin"
 
+# --- Zinit ---
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
@@ -43,7 +46,7 @@ zinit light junegunn/fzf
 zinit snippet OMZL::git.zsh
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
-# zinit snippet OMZP::archlinux
+zinit snippet OMZP::archlinux
 zinit snippet OMZP::command-not-found
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
@@ -55,7 +58,7 @@ zinit light zsh-users/zsh-syntax-highlighting
 autoload -Uz compinit && compinit
 zinit cdreplay -q
 
-# History Settings
+# --- History ---
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
@@ -67,7 +70,7 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-# Completion Styling
+# --- Completion ---
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
@@ -75,6 +78,7 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 
+# --- Key Bindings ---
 bindkey -e # Emacs mode
 
 # History Search (Up/Down arrow)
@@ -94,18 +98,20 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
+# --- Integrations ---
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
 # Zoxide
 eval "$(zoxide init --cmd cd zsh)"
 
-# 7. ALIASES & FUNCTIONS
+# --- Aliases ---
 # General
 alias c='clear'
 alias x='exit'
 alias vim='nvim'
 alias p='ping 8.8.8.8'
+alias syu='sudo pacman -Syu'
 
 # Eza (Better ls)
 alias ls="eza --icons=auto --group-directories-first"
@@ -120,6 +126,7 @@ alias wd='warp-cli disconnect'
 alias kubectl="minikube kubectl --"
 alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 
+# --- Functions ---
 # Yazi function (Shell wrapper to allow cd on exit)
 function y() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -129,7 +136,7 @@ function y() {
     rm -f -- "$tmp"
 }
 
-# Custom Widgets
+# --- Widgets ---
 # Clear screen but keep current command buffer
 function clear-screen-and-scrollback() {
   echoti civis >"$TTY"
@@ -140,7 +147,7 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^Xl' clear-screen-and-scrollback
 
-# Hotkey Insertions - Text Snippets
+# --- Hotkey Insertions ---
 # Insert git commit template (Ctrl+X, G, C)
 # \C-b moves cursor back one position
 bindkey -s '^Xgc' 'git commit -m ""\C-b'
@@ -153,5 +160,6 @@ bindkey -s '^Xdu' 'docker compose up -d'
 bindkey -s '^Xdb' 'docker compose up -d --build'
 bindkey -s '^Xdd' 'docker compose down'
 
+# --- Prompt ---
 # Load Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

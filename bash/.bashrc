@@ -1,11 +1,13 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
+# --- Interactive Check ---
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
 esac
 
+# --- Environment ---
 # Source environment file
 if [[ -f "$HOME/.local/bin/env" ]]; then
   source "$HOME/.local/bin/env"
@@ -16,16 +18,10 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Yazi function for directory navigation
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+export EDITOR=micro
+export MICRO_TRUECOLOR=1
 
-# History settings
+# --- History ---
 HISTSIZE=5000
 HISTFILESIZE=$HISTSIZE
 HISTCONTROL=ignoreboth:erasedups
@@ -34,6 +30,7 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+# --- Shell Options ---
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -44,6 +41,7 @@ shopt -s globstar 2> /dev/null
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# --- Prompt ---
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
@@ -86,6 +84,7 @@ xterm*|rxvt*)
     ;;
 esac
 
+# --- Aliases ---
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -95,7 +94,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# Aliases
 alias ls="eza --icons=always"
 alias vim='nvim'
 alias c='clear'
@@ -116,6 +114,7 @@ alias kubectl="minikube kubectl --"
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# --- Completion ---
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -125,6 +124,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# --- Integrations ---
 # Set up fzf key bindings and fuzzy completion
 if command -v fzf >/dev/null 2>&1; then
     source <(fzf --bash)
@@ -135,16 +135,22 @@ if command -v fzf &> /dev/null && command -v bat &> /dev/null; then
     alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 fi
 
-# Shell integrations
+# Zoxide
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init --cmd cd bash)"
 fi
 
-# Environment variables
-export EDITOR=micro
-export MICRO_TRUECOLOR=1
+# --- Functions ---
+# Yazi function for directory navigation
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
 
-# Auto-start Tmux
+# --- Auto-Start Tmux ---
 # if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then
 #    if tmux has-session -t ${USER} 2>/dev/null; then
 #          # Session exists: Open a new window in the current directory ($PWD), then attach
