@@ -1,2 +1,6 @@
+# Symlink dotfiles into the home directory
 target=~
+
+# Always symlink individual files instead of entire directories
+# Prevents other programs from accidentally writing into the dotfiles repo
 no-folding

@@ -13,10 +13,17 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Editor Config
+# Editor
 export EDITOR=micro
 export MICRO_TRUECOLOR=1
-export PATH="$PATH:/home/deffa/.config/composer/vendor/bin"
+
+# PATH
+path=(
+    $path
+    ~/.local/bin
+    ~/.config/composer/vendor/bin
+    ~/scripts
+)
 
 # --- Zinit ---
 # Set the directory we want to store zinit and plugins
@@ -55,6 +62,7 @@ zinit snippet OMZP::command-not-found
 # --- Syntax Highlighting (MUST be last plugin loaded) ---
 zinit light zsh-users/zsh-syntax-highlighting
 
+# Finalize completion system after all plugins are loaded
 autoload -Uz compinit && compinit
 zinit cdreplay -q
 
@@ -62,13 +70,15 @@ zinit cdreplay -q
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_save_no_dups
-setopt hist_ignore_dups
-setopt hist_find_no_dups
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_SPACE
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt EXTENDED_HISTORY
+setopt HIST_REDUCE_BLANKS
 
 # --- Completion ---
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -112,6 +122,7 @@ alias x='exit'
 alias vim='nvim'
 alias p='ping 8.8.8.8'
 alias syu='sudo pacman -Syu'
+alias sudo='sudo '
 
 # Eza (Better ls)
 alias ls="eza --icons=auto --group-directories-first"
@@ -151,8 +162,6 @@ bindkey '^Xl' clear-screen-and-scrollback
 # Insert git commit template (Ctrl+X, G, C)
 # \C-b moves cursor back one position
 bindkey -s '^Xgc' 'git commit -m ""\C-b'
-
-# More examples:
 bindkey -s '^Xgp' 'git push origin '
 bindkey -s '^Xgs' 'git status\n'
 bindkey -s '^Xgl' 'git log --oneline -n 10\n'
