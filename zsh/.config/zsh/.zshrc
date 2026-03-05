@@ -167,27 +167,9 @@ source <(fzf --zsh)
 eval "$(zoxide init --cmd cd zsh)"
 
 # --- Aliases ---
-# General
-alias c='clear'
-alias x='exit'
-alias vim='nvim'
-alias p='ping 8.8.8.8'
-alias syu='sudo pacman -Syu'
-alias sudo='sudo '
-
-# Eza (Better ls)
-alias ls="eza --icons=auto --group-directories-first"
-alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
-alias lta='lt -a'
-
-# Tools
-alias lzd='lazydocker'
-alias cw='warp-cli connect'
-alias wd='warp-cli disconnect'
-alias kubectl="minikube kubectl --"
-alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
-alias zshrc="$EDITOR $ZDOTDIR/.zshrc"
+if [ -f "$HOME/.config/shell/alias" ]; then
+    source "$HOME/.config/shell/alias"
+fi
 
 # --- Functions ---
 # Yazi function (Shell wrapper to allow cd on exit)
