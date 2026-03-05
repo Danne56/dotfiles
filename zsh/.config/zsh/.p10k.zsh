@@ -53,6 +53,8 @@
     dir                       # current directory
     vcs                       # git status
     # command_execution_time  # previous command duration
+    yazi
+
     # =========================[ Line #2 ]=========================
     newline                   # \n
     # virtualenv              # python virtual environment
@@ -186,6 +188,8 @@
   # can slow down prompt by 1-2 milliseconds, so it's better to keep it turned off unless you
   # really need it.
   typeset -g POWERLEVEL9K_DISABLE_HOT_RELOAD=true
+
+  source "$ZDOTDIR"/.yazi_p10k.zsh
 
   # If p10k is already loaded, reload configuration.
   # This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.

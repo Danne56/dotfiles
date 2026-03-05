@@ -39,10 +39,11 @@ unset_alt   = { fg = "#f2cdcd", bg = "#313244"}
 parent = { fg = "#1e1e2e", bg = "#cdd6f4" }
 current = { fg = "#1e1e2e", bg = "#b4befe" }
 preview = { fg = "#1e1e2e", bg = "#cdd6f4" }
+padding = { open = "█", close = "█" }
 
 [status]
-sep_left  = { open = "", close = "" }
-sep_right = { open = "", close = "" }
+sep_left  = { open = "█", close = "█" }
+sep_right = { open = "█", close = "█" }
 
 progress_label  = { fg = "#ffffff", bold = true }
 progress_normal = { fg = "#a6e3a1", bg = "#45475a" }

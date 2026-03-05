@@ -13,3 +13,24 @@ run = 'piper -- bat -p --color=always "$1"'
 [[plugin.prepend_previewers]]
 url = "*.tar*"
 run = 'piper --format=url -- tar tf "$1"'
+
+[[plugin.prepend_preloaders]]
+mime = "{audio,video,image}/*"
+run = "mediainfo"
+
+[[plugin.prepend_previewers]]
+mime = "{audio,video,image}/*"
+run = "mediainfo"
+
+[tasks]
+image_alloc = 1073741824
+
+[[plugin.prepend_fetchers]]
+id  = "git"
+url = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id  = "git"
+url = "*/"
+run = "git"

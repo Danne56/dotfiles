@@ -1,0 +1,48 @@
+filetype: markdown
+
+detect:
+    filename: "\\.(livemd|md|mkd|mkdn|markdown)$"
+
+rules:
+    # Headlines (Glow uses bold magenta/pink)
+    - special: "^#{1,6}.*"
+
+    # Lists
+    - identifier: "^[[:space:]]*[\\*+-] |^[[:space:]]*[0-9]+\\. "
+
+    # Blockquotes
+    - comment: "^>.*"
+
+    # Tables
+    - symbol: ".*[ :]\\|[ :].*"
+
+    # Strong emphasis (Bold)
+    # Simplified to match **text** or __text__ without lookaheads
+    - bold: "(\\*\\*|__)[^*_]+(\\*\\*|__)"
+
+    # Emphasis (Italic)
+    - italic: "(\\*|_)[^*_]+(\\*|_)"
+
+    # Strike-through
+    - error: "~~[^~]+~~"
+
+    # Links and Images
+    - constant: "\\[[^]]+\\]"
+    - constant: "\\[([^][]|\\[[^]]*\\])*\\]\\([^)]+\\)"
+    - underlined: "https?://[^ )>]+"
+    - underlined: "!\\[[^][]*\\](\\([^)]+\\)|\\[[^]]+\\])"
+
+    # Horizontal rules
+    - special: "^(---+|===+|___+|\\*\\*\\*+)\\s*$"
+
+    # Fenced Code Blocks
+    - constant: "^```.*$"
+
+    # Inline Code
+    - constant:
+        start: "`"
+        end: "`"
+        rules: []
+
+    # Misc symbols
+    - preproc: "(\\(([CcRr]|[Tt][Mm])\\)|\\.{3}|(^|[[:space:]])\\-\\-($|[[:space:]]))"

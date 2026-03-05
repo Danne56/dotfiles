@@ -3,7 +3,42 @@ use = "yazi-rs/plugins:piper"
 rev = "25918dc"
 hash = "384464b6df8cb807425c521f8cd790f3"
 
+[[plugin.deps]]
+use = "AnirudhG07/plugins-yazi:copy-file-contents"
+rev = "71545f4"
+hash = "f8530ee84fee95dbcc26bb1d8d8019c7"
+
+[[plugin.deps]]
+use = "XYenon/clipboard"
+rev = "3b96810"
+hash = "13d7eb15a079c735e34124b922322de5"
+
+[[plugin.deps]]
+use = "h-hg/yamb"
+rev = "5f2e22e"
+hash = "699fe07e0d2d1b4af8dafb84168eeb04"
+
+[[plugin.deps]]
+use = "Lil-Dank/lazygit"
+rev = "0e56060"
+hash = "ab2e66065a94cca4886b303518e44bd8"
+
+[[plugin.deps]]
+use = "boydaihungst/mediainfo"
+rev = "20ecff6"
+hash = "ad48b4d2fd8f429ce87b0fddf7f34c9"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:git"
+rev = "1962818"
+hash = "26db011a778f261d730d4f5f8bf24b3f"
+
 [[flavor.deps]]
 use = "tkapias/nightfly"
 rev = "599b8ad"
 hash = "d1a9e05ecbbd63bc5bb85a54e7f1e33a"
+
+[[flavor.deps]]
+use = "6ruby1/eldritch"
+rev = "7b5bf34"
+hash = "d73a2192b13f0267461d5424a7f10cd1"

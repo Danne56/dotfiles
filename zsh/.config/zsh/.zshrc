@@ -21,8 +21,9 @@ export MICRO_TRUECOLOR=1
 path=(
     $path
     ~/.local/bin
-    ~/.config/composer/vendor/bin
-    ~/scripts
+    $XDG_CONFIG_HOME/composer/vendor/bin
+    $XDG_CONFIG_HOME/scripts
+		~/.symfony5/bin
 )
 
 # --- Zinit ---
@@ -46,15 +47,17 @@ zinit light Aloxaf/fzf-tab
 zinit light fdellwing/zsh-bat
 
 # --- Binaries (from GitHub Releases) ---
-zinit ice from"gh-r" as"program"
-zinit light junegunn/fzf
+# zinit ice from"gh-r" as"program"
+# zinit light junegunn/fzf
 
 # --- OMZ Snippets ---
-zinit snippet OMZL::git.zsh
-zinit snippet OMZP::git
+# zinit snippet OMZL::git.zsh
+# zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::archlinux
 zinit snippet OMZP::command-not-found
+zinit snippet OMZP::systemd
+# zinit snippet OMZP::
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
 # zinit snippet OMZP::kubectx
@@ -70,6 +73,7 @@ zinit cdreplay -q
 HISTSIZE=5000
 HISTFILE=~/.zsh_history
 SAVEHIST=$HISTSIZE
+setopt INC_APPEND_HISTORY
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
@@ -79,6 +83,8 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt EXTENDED_HISTORY
 setopt HIST_REDUCE_BLANKS
+setopt interactive_comments
+# stty stop undef
 
 # --- Completion ---
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -91,12 +97,57 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $real
 # --- Key Bindings ---
 bindkey -e # Emacs mode
 
+# create a zkbd compatible hash;
+# to add other keys to this hash, see: man 5 terminfo
+typeset -g -A key
+
+key[Home]="${terminfo[khome]}"
+key[End]="${terminfo[kend]}"
+key[Insert]="${terminfo[kich1]}"
+key[Backspace]="${terminfo[kbs]}"
+key[Delete]="${terminfo[kdch1]}"
+key[Up]="${terminfo[kcuu1]}"
+key[Down]="${terminfo[kcud1]}"
+key[Left]="${terminfo[kcub1]}"
+key[Right]="${terminfo[kcuf1]}"
+key[PageUp]="${terminfo[kpp]}"
+key[PageDown]="${terminfo[knp]}"
+key[Shift-Tab]="${terminfo[kcbt]}"
+
+# setup key accordingly
+[[ -n "${key[Home]}"      ]] && bindkey -- "${key[Home]}"       beginning-of-line
+[[ -n "${key[End]}"       ]] && bindkey -- "${key[End]}"        end-of-line
+[[ -n "${key[Insert]}"    ]] && bindkey -- "${key[Insert]}"     overwrite-mode
+[[ -n "${key[Backspace]}" ]] && bindkey -- "${key[Backspace]}"  backward-delete-char
+[[ -n "${key[Delete]}"    ]] && bindkey -- "${key[Delete]}"     delete-char
+[[ -n "${key[Left]}"      ]] && bindkey -- "${key[Left]}"       backward-char
+[[ -n "${key[Right]}"     ]] && bindkey -- "${key[Right]}"      forward-char
+[[ -n "${key[PageUp]}"    ]] && bindkey -- "${key[PageUp]}"     beginning-of-buffer-or-history
+[[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
+[[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
+
+# Finally, make sure the terminal is in application mode, when zle is
+# active. Only then are the values from $terminfo valid.
+if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+	autoload -Uz add-zle-hook-widget
+	function zle_application_mode_start { echoti smkx }
+	function zle_application_mode_stop { echoti rmkx }
+	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+fi
+
 # History Search (Up/Down arrow)
-autoload -Uz history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "$terminfo[kcuu1]" history-beginning-search-backward-end
-bindkey "$terminfo[kcud1]" history-beginning-search-forward-end
+# autoload -Uz history-search-end
+# zle -N history-beginning-search-backward-end history-search-end
+# zle -N history-beginning-search-forward-end history-search-end
+# bindkey "$terminfo[kcuu1]" history-beginning-search-backward-end
+# bindkey "$terminfo[kcud1]" history-beginning-search-forward-end
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+[[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
 # Navigation
 bindkey '^p' history-search-backward
@@ -136,6 +187,7 @@ alias cw='warp-cli connect'
 alias wd='warp-cli disconnect'
 alias kubectl="minikube kubectl --"
 alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
+alias zshrc="$EDITOR $ZDOTDIR/.zshrc"
 
 # --- Functions ---
 # Yazi function (Shell wrapper to allow cd on exit)
@@ -156,7 +208,7 @@ function clear-screen-and-scrollback() {
   zle .reset-prompt
 }
 zle -N clear-screen-and-scrollback
-bindkey '^Xl' clear-screen-and-scrollback
+bindkey '^l' clear-screen-and-scrollback
 
 # --- Hotkey Insertions ---
 # Insert git commit template (Ctrl+X, G, C)
@@ -171,4 +223,12 @@ bindkey -s '^Xdd' 'docker compose down'
 
 # --- Prompt ---
 # Load Powerlevel10k config
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+
+# autoload -Uz add-zsh-hook
+#
+# function reset_broken_terminal () {
+# 	printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
+# }
+#
+# add-zsh-hook -Uz precmd reset_broken_terminal
