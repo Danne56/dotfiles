@@ -6,6 +6,10 @@ alias p='ping 8.8.8.8'
 alias syu='sudo pacman -Syu'
 alias sudo='sudo '
 alias z='zoxide'
+alias fk="sudo !!"
+alias du="du -h -d 1"
+alias df="df -h"
+alias rsync="rsync -aph --info=PROGRESS2"
 
 # Eza (Better ls)
 alias ls="eza --icons=auto --group-directories-first"
@@ -29,7 +33,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # Core GNU tools with color support
 if [ -x /usr/bin/dircolors ]; then
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+     alias grep='grep --color=auto'
+     alias fgrep='fgrep --color=auto'
+     alias egrep='egrep --color=auto'
 fi
