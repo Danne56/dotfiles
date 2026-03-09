@@ -47,8 +47,8 @@ zinit light Aloxaf/fzf-tab
 zinit light fdellwing/zsh-bat
 
 # --- Binaries (from GitHub Releases) ---
-# zinit ice from"gh-r" as"program"
-# zinit light junegunn/fzf
+zinit ice from"gh-r" as"program"
+zinit light junegunn/fzf
 
 # --- OMZ Snippets ---
 # zinit snippet OMZL::git.zsh
