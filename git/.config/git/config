@@ -43,6 +43,9 @@
 [core]
         # fsmonitor = true
         # untrackedCache = true
+
+			  excludesfile = ~/.config/git/ignore
+
 [merge]
         # (just 'diff3' if git version < 2.3)
         # conflictstyle = zdiff3

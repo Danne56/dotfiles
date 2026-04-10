@@ -71,7 +71,7 @@ zinit cdreplay -q
 
 # --- History ---
 HISTSIZE=5000
-HISTFILE=~/.zsh_history
+HISTFILE=$ZDOTDIR/.zsh_history
 SAVEHIST=$HISTSIZE
 setopt INC_APPEND_HISTORY
 setopt APPEND_HISTORY

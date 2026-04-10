@@ -71,3 +71,8 @@ desc = "Open $SHELL here"
 on   = [ "g", "d" ]
 run  = "plugin lazydocker"
 desc = "Run lazydocker"
+
+[[mgr.prepend_keymap]]
+on   = [ "c", "m" ]
+run  = "plugin chmod"
+desc = "Chmod on selected files"

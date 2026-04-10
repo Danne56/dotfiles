@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-SESSION_NAME="ceph-cluster"
+SESSION_NAME="ceph-local-osd"
 
 # 1. Check if the session exists; if not, create it
 if ! tmux has-session -t $SESSION_NAME 2>/dev/null; then
@@ -9,24 +9,20 @@ if ! tmux has-session -t $SESSION_NAME 2>/dev/null; then
     # -d means detached (background), so it works safely from inside or outside tmux
     P0=$(tmux new-session -d -s $SESSION_NAME -x 200 -y 100 -P -F "#{pane_id}")
 
-    # --- Manual Grid Construction (3x2) ---
+    # --- Manual Grid Construction (2x2) ---
     P1=$(tmux split-window -h -t "$P0" -P -F "#{pane_id}")
-    P2=$(tmux split-window -h -t "$P1" -P -F "#{pane_id}")
     tmux select-layout -t $SESSION_NAME even-horizontal
 
-    P3=$(tmux split-window -v -t "$P0" -P -F "#{pane_id}")
-    P4=$(tmux split-window -v -t "$P1" -P -F "#{pane_id}")
-    P5=$(tmux split-window -v -t "$P2" -P -F "#{pane_id}")
+    P2=$(tmux split-window -v -t "$P0" -P -F "#{pane_id}")
+    P3=$(tmux split-window -v -t "$P1" -P -F "#{pane_id}")
 
-    PANES=($P0 $P1 $P2 $P3 $P4 $P5)
+    PANES=($P0 $P1 $P2 $P3)
 
     # 4. Send SSH commands
-    tmux send-keys -t "${PANES[0]}" 'ssh ceph-mgr-1' C-m
-    tmux send-keys -t "${PANES[1]}" 'ssh ceph-mgr-2' C-m
-    tmux send-keys -t "${PANES[2]}" 'ssh ceph-osd-1' C-m
-    tmux send-keys -t "${PANES[3]}" 'ssh ceph-osd-2' C-m
-    tmux send-keys -t "${PANES[4]}" 'ssh ceph-osd-3' C-m
-    tmux send-keys -t "${PANES[5]}" 'ssh ceph-osd-4' C-m
+    tmux send-keys -t "${PANES[0]}" 'ssh 192.168.202.231' C-m
+    tmux send-keys -t "${PANES[1]}" 'ssh 192.168.202.232' C-m
+    tmux send-keys -t "${PANES[2]}" 'ssh 192.168.202.233' C-m
+    tmux send-keys -t "${PANES[3]}" 'ssh 192.168.202.234' C-m
 
     # 5. Setup Sync and Focus
     tmux set-window-option -t "${PANES[0]}" synchronize-panes on

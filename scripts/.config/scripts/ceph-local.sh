@@ -23,8 +23,8 @@ if ! tmux has-session -t $SESSION_NAME 2>/dev/null; then
     # 4. Send SSH commands
     tmux send-keys -t "${PANES[0]}" 'ssh 192.168.202.221' C-m
     tmux send-keys -t "${PANES[1]}" 'ssh 192.168.202.222' C-m
-    tmux send-keys -t "${PANES[3]}" 'ssh 192.168.202.231' C-m
-    tmux send-keys -t "${PANES[2]}" 'ssh 192.168.202.232' C-m
+    tmux send-keys -t "${PANES[2]}" 'ssh 192.168.202.231' C-m
+    tmux send-keys -t "${PANES[3]}" 'ssh 192.168.202.232' C-m
     tmux send-keys -t "${PANES[4]}" 'ssh 192.168.202.233' C-m
     tmux send-keys -t "${PANES[5]}" 'ssh 192.168.202.234' C-m
 
