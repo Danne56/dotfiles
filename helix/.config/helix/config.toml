@@ -1,1 +1,23 @@
 theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"
+auto-save = true
+bufferline = "multiple"
+color-modes = true
+
+[editor.gutters]
+layout = ["diff", "diagnostics", "line-numbers", "spacer"]
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+character = "╎"
+skip-levels = 1
+
+[keys.insert]
+C-c = "normal_mode"
