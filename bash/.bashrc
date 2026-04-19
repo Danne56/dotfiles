@@ -121,14 +121,9 @@ if command -v zoxide >/dev/null 2>&1; then
 fi
 
 # --- Functions ---
-# Yazi function for directory navigation
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	IFS= read -r -d '' cwd < "$tmp"
-	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-	rm -f -- "$tmp"
-}
+if [ -f "$HOME/.config/shell/function" ]; then
+    source "$HOME/.config/shell/function"
+fi
 
 # --- Auto-Start Tmux ---
 # if [ -x "$(command -v tmux)" ] && [ -n "${DISPLAY}" ] && [ -z "${TMUX}" ]; then

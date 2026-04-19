@@ -15,3 +15,4 @@ src/
 backups/
 buffers/
 plugins/
+.zsh_history

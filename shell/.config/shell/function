@@ -1,0 +1,20 @@
+syu() {
+    if command -v pacman >/dev/null 2>&1; then
+        sudo pacman -Syu
+    elif command -v apt >/dev/null 2>&1; then
+        sudo apt update && sudo apt upgrade
+    else
+        echo "Error: Neither apt nor pacman found."
+        return 1
+    fi
+}
+
+# Yazi function (Shell wrapper to allow cd on exit)
+y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+

@@ -88,8 +88,10 @@ setopt interactive_comments
 
 # --- Completion ---
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33 # colorize cmp menu
 zstyle ':completion:*' menu no
+zstyle ':completion:*' squeeze-slashes false # explicit disable to allow /*/ expansion
+
 # Use fzf to preview directories during cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
@@ -172,14 +174,9 @@ if [ -f "$HOME/.config/shell/alias" ]; then
 fi
 
 # --- Functions ---
-# Yazi function (Shell wrapper to allow cd on exit)
-function y() {
-    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-    yazi "$@" --cwd-file="$tmp"
-    IFS= read -r -d '' cwd < "$tmp"
-    [ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
-    rm -f -- "$tmp"
-}
+if [ -f "$HOME/.config/shell/function" ]; then
+    source "$HOME/.config/shell/function"
+fi
 
 # --- Widgets ---
 # Clear screen but keep current command buffer
@@ -214,3 +211,5 @@ bindkey -s '^Xdd' 'docker compose down'
 # }
 #
 # add-zsh-hook -Uz precmd reset_broken_terminal
+
+export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8

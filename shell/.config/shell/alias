@@ -3,13 +3,13 @@ alias c='clear'
 alias x='exit'
 alias vim='nvim'
 alias p='ping 8.8.8.8'
-alias syu='sudo pacman -Syu'
 alias sudo='sudo '
 alias z='zoxide'
 alias fk="sudo !!"
 alias du="du -h -d 1"
 alias df="df -h"
 alias rsync="rsync -aph --info=PROGRESS2"
+alias rsync-git="rsync -aph --info=PROGRESS2 --exclude-from=/home/deffa/.config/scripts/exclude-list-proyekt.txt"
 
 # Eza (Better ls)
 alias ls="eza --icons=auto --group-directories-first"
@@ -27,6 +27,7 @@ alias wd='warp-cli disconnect'
 alias kubectl="minikube kubectl --"
 alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 alias zshrc="$EDITOR $ZDOTDIR/.zshrc"
+alias hx="helix"
 
 # Alert alias for long running commands
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
