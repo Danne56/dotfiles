@@ -80,4 +80,15 @@ config.keys = {
   { key = "DownArrow", mods = "CTRL|SHIFT", action = act.AdjustPaneSize({ "Down", 3 }) },
 }
 
+-- Handle GNOME Cursor settings
+local success, stdout, stderr = wezterm.run_child_process({"gsettings", "get", "org.gnome.desktop.interface", "cursor-theme"})
+if success then
+  config.xcursor_theme = stdout:gsub("'(.+)'\n", "%1")
+end
+
+local success, stdout, stderr = wezterm.run_child_process({"gsettings", "get", "org.gnome.desktop.interface", "cursor-size"})
+if success then
+  config.xcursor_size = tonumber(stdout)
+end
+
 return config
