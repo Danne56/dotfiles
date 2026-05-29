@@ -14,7 +14,7 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
 fi
 
 # Editor
-export EDITOR=micro
+export EDITOR=helix
 export MICRO_TRUECOLOR=1
 
 # PATH
@@ -213,3 +213,7 @@ bindkey -s '^Xdd' 'docker compose down'
 # add-zsh-hook -Uz precmd reset_broken_terminal
 
 export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8
+if [[ -t 0 ]]; then
+  stty lnext undef
+  bindkey -r '^V'
+fi
