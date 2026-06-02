@@ -204,13 +204,31 @@ bindkey -s '^Xdd' 'docker compose down'
 # Load Powerlevel10k config
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
-# autoload -Uz add-zsh-hook
-#
-# function reset_broken_terminal () {
-# 	printf '%b' '\e[0m\e(B\e)0\017\e[?5l\e7\e[0;0r\e8'
-# }
-#
-# add-zsh-hook -Uz precmd reset_broken_terminal
+# --- Hooks ---
+# To merge hooks, use add-zsh-hook
+autoload -Uz add-zsh-hook
+
+# Then Define separate functions
+function auto_venv() {
+  # If already in a virtualenv, do nothing
+  if [[ -n "$VIRTUAL_ENV" && "$PWD" != *"${VIRTUAL_ENV:h}"* ]]; then
+    deactivate
+    return
+  fi
+
+  [[ -n "$VIRTUAL_ENV" ]] && return
+
+  local dir="$PWD"
+  while [[ "$dir" != "/" ]]; do
+    if [[ -f "$dir/.venv/bin/activate" ]]; then
+      source "$dir/.venv/bin/activate"
+      return
+    fi
+    dir="${dir:h}"
+  done
+}
+
+add-zsh-hook chpwd auto_venv
 
 export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8
 if [[ -t 0 ]]; then
