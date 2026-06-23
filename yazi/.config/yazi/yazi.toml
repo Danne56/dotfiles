@@ -34,3 +34,9 @@ group = "git"
 url   = "*/"
 run   = "git"
 group = "git"
+
+[opener]
+edit = [
+	{ run = "$EDITOR %s", block = true, for = "unix" },
+	{ run = "%EDITOR% %s", block = true, for = "windows" },
+]

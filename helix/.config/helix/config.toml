@@ -23,5 +23,12 @@ render = true
 character = "╎"
 skip-levels = 1
 
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator", "position", "file-line-ending", "file-type"]
+right = ["diagnostics", "selections", "register", "file-encoding"]
+separator = "│"
+diagnostics = ["warning", "error"]
+workspace-diagnostics = ["warning", "error"]
+
 [keys.insert]
 C-c = "normal_mode"
