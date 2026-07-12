@@ -13,10 +13,6 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Editor
-export EDITOR=helix
-export MICRO_TRUECOLOR=1
-
 # PATH
 path=(
     $path

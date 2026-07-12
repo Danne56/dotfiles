@@ -11,6 +11,10 @@
 # export BROWSER2="librewolf"
 # export DISPLAY=:0 # useful for some scripts
 
+# Editor
+export EDITOR=hx
+export MICRO_TRUECOLOR=1
+
 # follow XDG base dir specification
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
