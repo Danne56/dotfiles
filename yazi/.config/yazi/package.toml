@@ -1,17 +1,12 @@
 [[plugin.deps]]
-use = "yazi-rs/plugins:piper"
-rev = "39aaf6d"
-hash = "22bd6d4fe14524e79a0818d705b85d99"
-
-[[plugin.deps]]
 use = "AnirudhG07/plugins-yazi:copy-file-contents"
 rev = "71545f4"
 hash = "f8530ee84fee95dbcc26bb1d8d8019c7"
 
 [[plugin.deps]]
 use = "XYenon/clipboard"
-rev = "0ac0320"
-hash = "f80172438b4b5c31e94d6c891f734445"
+rev = "4533c7f"
+hash = "ba2b9be01c1aea7e23a51cad55ec68e5"
 
 [[plugin.deps]]
 use = "h-hg/yamb"
@@ -24,26 +19,19 @@ rev = "e73fd74"
 hash = "6ea5f37c7f219671ec504cb8311f889d"
 
 [[plugin.deps]]
-use = "boydaihungst/mediainfo"
-rev = "a6d30a1"
-hash = "579fe44e64b655ce46eeb526e3332f55"
-
-[[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "39aaf6d"
-hash = "2ea53389fd01aa5ff48f34bceb5cedbc"
+rev = "bb758e2"
+hash = "88e56a64b7ce7c4314427452343fef17"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "39aaf6d"
-hash = "6cc62d84e235604eae8f6d3fbcfa130"
+rev = "bb758e2"
+hash = "5b1c276b75cae91cbbdbe7863f39a540"
 
-[[flavor.deps]]
-use = "tkapias/nightfly"
-rev = "599b8ad"
-hash = "d1a9e05ecbbd63bc5bb85a54e7f1e33a"
+[[plugin.deps]]
+use = "KKV9/compress"
+rev = "e60e122"
+hash = "fbaf0adc8efc59555b748d36aab62d40"
 
-[[flavor.deps]]
-use = "6ruby1/eldritch"
-rev = "7b5bf34"
-hash = "d73a2192b13f0267461d5424a7f10cd1"
+[flavor]
+deps = []
