@@ -17,14 +17,3 @@ y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
-
-hx() {
-    if command -v helix >/dev/null 2>&1; then
-        command helix "$@"
-    elif command -v hx >/dev/null 2>&1; then
-        command \hx "$@"
-    else
-        echo "Error: Helix editor is not installed (neither 'helix' nor 'hx' found)." >&2
-        return 1
-    fi
-}
