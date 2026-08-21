@@ -35,6 +35,8 @@ C-c = "normal_mode"
 
 [keys.normal]
 C-s = ":w"
+C-q = ":q"
+C-x = ":x"
 X = ["extend_line_up", "extend_to_line_bounds"]
 S-down = ["extend_to_line_bounds", "delete_selection", "paste_after"]
 S-up = ["extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before"]

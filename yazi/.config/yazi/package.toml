@@ -1,17 +1,17 @@
 [[plugin.deps]]
 use = "AnirudhG07/plugins-yazi:copy-file-contents"
-rev = "71545f4"
-hash = "f8530ee84fee95dbcc26bb1d8d8019c7"
+rev = "3f4f1a3"
+hash = "421263a8558fbd2fdb07a75f074cc6e3"
 
 [[plugin.deps]]
 use = "XYenon/clipboard"
-rev = "4533c7f"
-hash = "ba2b9be01c1aea7e23a51cad55ec68e5"
+rev = "0f4982a"
+hash = "dcda5f179482ee8cc191ad679c9d72e0"
 
 [[plugin.deps]]
 use = "h-hg/yamb"
-rev = "5f2e22e"
-hash = "699fe07e0d2d1b4af8dafb84168eeb04"
+rev = "971b858"
+hash = "da4534745930e827a44d4585bbd965eb"
 
 [[plugin.deps]]
 use = "Lil-Dank/lazygit"
@@ -20,13 +20,13 @@ hash = "6ea5f37c7f219671ec504cb8311f889d"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "bb758e2"
-hash = "88e56a64b7ce7c4314427452343fef17"
+rev = "4848aac"
+hash = "5bb0bfab901d3601c370eafdd66edd31"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "bb758e2"
-hash = "5b1c276b75cae91cbbdbe7863f39a540"
+rev = "4848aac"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
 
 [[plugin.deps]]
 use = "KKV9/compress"
