@@ -1,0 +1,13 @@
+!.env
+.*
+node_modules/
+vmware/
+storage/*.key
+storage/pail/
+cache/
+logs/
+temp/
+build/
+.cache/
+cache/
+Proyekt/
