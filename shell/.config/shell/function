@@ -17,3 +17,11 @@ y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+# Rerun last command immediately with sudo
+fk() {
+	local cmd
+	cmd="$(fc -ln -1)"
+	[[ -z "$cmd" ]] && return 1
+	eval "sudo $cmd"
+}

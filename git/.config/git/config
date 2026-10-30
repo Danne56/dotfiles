@@ -58,3 +58,5 @@
 	email = 134295385+Danne56@users.noreply.github.com
 [safe]
 	directory = %(prefix)///wsl.localhost/archlinux/home/deffa/dotfiles
+[color]
+	ui = auto

@@ -4,8 +4,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# --- Environment ---
-# Load custom env file if it exists
+# --- Environment & PATH ---
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+# Load custom env file if present
 [[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
 
 # Homebrew Setup
@@ -13,36 +16,33 @@ if [[ -f "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# PATH
+# PATH (typeset -U prevents duplicates)
+typeset -U path
 path=(
-    $path
-    ~/.local/bin
-    $XDG_CONFIG_HOME/composer/vendor/bin
-    $XDG_CONFIG_HOME/scripts
-		~/.symfony5/bin
+  ~/.local/bin
+  ~/.opencode/bin
+  ~/.symfony5/bin
+  "${XDG_CONFIG_HOME:-$HOME/.config}/composer/vendor/bin"
+  "${XDG_CONFIG_HOME:-$HOME/.config}/scripts"
+  $path
 )
 
 # --- Zinit ---
-# Set the directory we want to store zinit and plugins
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-
-# Download Zinit, if it's not there yet
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
-
-# Source/Load zinit
 source "${ZINIT_HOME}/zinit.zsh"
 
-# --- Prompt & Essentials ---
+# Plugins & Prompt
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
 zinit light Aloxaf/fzf-tab
 zinit light fdellwing/zsh-bat
 
-# --- Binaries (from GitHub Releases) ---
+# Binaries
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf
 
@@ -58,47 +58,48 @@ zinit snippet OMZP::systemd
 # zinit snippet OMZP::kubectl
 # zinit snippet OMZP::kubectx
 
-# --- Syntax Highlighting (MUST be last plugin loaded) ---
+# Syntax Highlighting (must load after all other plugins)
 zinit light zsh-users/zsh-syntax-highlighting
 
-# Finalize completion system after all plugins are loaded
+# Finalize completion system
 autoload -Uz compinit && compinit
 zinit cdreplay -q
 
 # --- History ---
 HISTSIZE=5000
-HISTFILE=$ZDOTDIR/.zsh_history
 SAVEHIST=$HISTSIZE
+HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/.zsh_history"
+
 setopt INC_APPEND_HISTORY
-setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
-setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt EXTENDED_HISTORY
 setopt HIST_REDUCE_BLANKS
 setopt interactive_comments
-# stty stop undef
 
-# --- Completion ---
+# --- Completion Styles ---
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33 # colorize cmp menu
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33
 zstyle ':completion:*' menu no
-zstyle ':completion:*' squeeze-slashes false # explicit disable to allow /*/ expansion
+zstyle ':completion:*' squeeze-slashes false
 
-# Use fzf to preview directories during cd
+# FZF previews
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 
-# --- Key Bindings ---
+# --- Key Bindings & Terminal ---
 bindkey -e # Emacs mode
 
-# create a zkbd compatible hash;
-# to add other keys to this hash, see: man 5 terminfo
-typeset -g -A key
+# Terminal tty reset
+if [[ -t 0 ]]; then
+  stty lnext undef
+  bindkey -r '^V'
+fi
 
+typeset -g -A key
 key[Home]="${terminfo[khome]}"
 key[End]="${terminfo[kend]}"
 key[Insert]="${terminfo[kich1]}"
@@ -112,7 +113,6 @@ key[PageUp]="${terminfo[kpp]}"
 key[PageDown]="${terminfo[knp]}"
 key[Shift-Tab]="${terminfo[kcbt]}"
 
-# setup key accordingly
 [[ -n "${key[Home]}"      ]] && bindkey -- "${key[Home]}"       beginning-of-line
 [[ -n "${key[End]}"       ]] && bindkey -- "${key[End]}"        end-of-line
 [[ -n "${key[Insert]}"    ]] && bindkey -- "${key[Insert]}"     overwrite-mode
@@ -124,58 +124,38 @@ key[Shift-Tab]="${terminfo[kcbt]}"
 [[ -n "${key[PageDown]}"  ]] && bindkey -- "${key[PageDown]}"   end-of-buffer-or-history
 [[ -n "${key[Shift-Tab]}" ]] && bindkey -- "${key[Shift-Tab]}"  reverse-menu-complete
 
-# Finally, make sure the terminal is in application mode, when zle is
-# active. Only then are the values from $terminfo valid.
+# Application mode handling for terminfo keys
 if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-	autoload -Uz add-zle-hook-widget
-	function zle_application_mode_start { echoti smkx }
-	function zle_application_mode_stop { echoti rmkx }
-	add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+  autoload -Uz add-zle-hook-widget
+  function zle_application_mode_start { echoti smkx }
+  function zle_application_mode_stop { echoti rmkx }
+  add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+  add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
-# History Search (Up/Down arrow)
-# autoload -Uz history-search-end
-# zle -N history-beginning-search-backward-end history-search-end
-# zle -N history-beginning-search-forward-end history-search-end
-# bindkey "$terminfo[kcuu1]" history-beginning-search-backward-end
-# bindkey "$terminfo[kcud1]" history-beginning-search-forward-end
+# Arrow search
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-
 [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
 [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
-# Navigation
+# Navigation & Editing
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 
-# Line Buffer Editor
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
-# --- Integrations ---
-# Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
-# Zoxide
-eval "$(zoxide init --cmd cd zsh)"
-
-# --- Aliases ---
-if [ -f "$HOME/.config/shell/alias" ]; then
-    source "$HOME/.config/shell/alias"
-fi
-
-# --- Functions ---
-if [ -f "$HOME/.config/shell/function" ]; then
-    source "$HOME/.config/shell/function"
-fi
-
 # --- Widgets ---
-# Clear screen but keep current command buffer
+copy-current-line() {
+  print -rn -- "$BUFFER" | wl-copy
+}
+zle -N copy-current-line
+bindkey '^X^C' copy-current-line
+
 function clear-screen-and-scrollback() {
   echoti civis >"$TTY"
   printf '%b' '\e[H\e[2J\e[3J' >"$TTY"
@@ -185,9 +165,7 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^l' clear-screen-and-scrollback
 
-# --- Hotkey Insertions ---
-# Insert git commit template (Ctrl+X, G, C)
-# \C-b moves cursor back one position
+# Hotkey string insertions
 bindkey -s '^Xgc' 'git commit -m ""\C-b'
 bindkey -s '^Xgp' 'git push origin '
 bindkey -s '^Xgs' 'git status\n'
@@ -196,17 +174,27 @@ bindkey -s '^Xdu' 'docker compose up -d'
 bindkey -s '^Xdb' 'docker compose up -d --build'
 bindkey -s '^Xdd' 'docker compose down'
 
-# --- Prompt ---
-# Load Powerlevel10k config
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+# --- Integrations ---
+source <(fzf --zsh)
+eval "$(zoxide init --cmd cd zsh)"
 
-# --- Hooks ---
-# To merge hooks, use add-zsh-hook
+# --- Aliases & Functions ---
+[[ -f "$HOME/.config/shell/alias" ]]    && source "$HOME/.config/shell/alias"
+[[ -f "$HOME/.config/shell/function" ]] && source "$HOME/.config/shell/function"
+
+# Global Aliases
+alias -g NE='2>/dev/null'
+alias -g NO='>/dev/null'
+alias -g NUL='>/dev/null 2>&1'
+alias -g J='| jq'
+alias -g C='| wl-copy'
+
+autoload -Uz zmv
+
+# --- Hooks & Prompt ---
 autoload -Uz add-zsh-hook
 
-# Then Define separate functions
 function auto_venv() {
-  # If already in a virtualenv, do nothing
   if [[ -n "$VIRTUAL_ENV" && "$PWD" != *"${VIRTUAL_ENV:h}"* ]]; then
     deactivate
     return
@@ -223,11 +211,7 @@ function auto_venv() {
     dir="${dir:h}"
   done
 }
-
 add-zsh-hook chpwd auto_venv
 
-export LC_ALL=en_US.UTF-8 && export LANG=en_US.UTF-8
-if [[ -t 0 ]]; then
-  stty lnext undef
-  bindkey -r '^V'
-fi
+# Load Powerlevel10k theme configuration
+[[ -f "${ZDOTDIR:-$HOME/.config/zsh}/.p10k.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/.p10k.zsh"

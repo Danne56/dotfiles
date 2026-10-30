@@ -5,7 +5,6 @@ alias vim='nvim'
 alias p='ping -4 google.com'
 alias sudo='sudo '
 alias z='zoxide'
-alias fk="sudo !!"
 alias du="du -h -d 1"
 alias df="df -h"
 alias rsync="rsync -avxh --info=PROGRESS2"

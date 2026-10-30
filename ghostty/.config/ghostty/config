@@ -11,3 +11,4 @@ shell-integration = zsh
 # freetype-load-flags = no-autohint
 font-feature=-liga
 font-thicken=true
+command = "/usr/bin/tmux new-session -A -D -s main"
