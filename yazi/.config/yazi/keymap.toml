@@ -77,6 +77,11 @@ run  = "plugin lazygit"
 desc = "run lazygit"
 
 [[mgr.prepend_keymap]]
+on   = [ "g", "z" ]
+run  = "plugin ziggity"
+desc = "run ziggity"
+
+[[mgr.prepend_keymap]]
 on   = "!"
 for  = "unix"
 run  = 'shell "$SHELL" --block'
