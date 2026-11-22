@@ -1,6 +1,6 @@
 #!/bin/sh
-# env vars to set on login, zsh settings in ~/config/zsh/.zshrc
-# add `export ZDOTDIR="$HOME/.config/zsh"` to /etc/zsh/zshenv in order to place this file at .config/zsh/.zprofile
+# env vars to set for all zsh shells
+# add `export ZDOTDIR="$HOME/.config/zsh"` to /etc/zsh/zshenv in order to place this file at .config/zsh/.zshenv
 
 # default programs
 # export EDITOR="nvim"
@@ -27,7 +27,8 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export LESSHISTFILE="$XDG_CACHE_HOME/less_history"
 export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
 
-# add scripts to path
+# add scripts to path (typeset -U prevents duplicates on nested shells)
+typeset -U path PATH
 export PATH="$XDG_CONFIG_HOME/scripts:$PATH"
 
 # moving other files and some other vars
