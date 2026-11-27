@@ -33,5 +33,10 @@ use = "KKV9/compress"
 rev = "80e5268"
 hash = "868db729374b97871bc30b96d0e9061f"
 
+[[plugin.deps]]
+use = "hawkff/zippity:zippity"
+rev = "aec10be"
+hash = "464111f9707298d34ca69b001a440173"
+
 [flavor]
 deps = []

@@ -5,15 +5,16 @@ linemode = "size"
 [tasks]
 image_alloc = 1073741824
 
-[[plugin.prepend_fetchers]]
-url   = "*"
-run   = "git"
-group = "git"
-
-[[plugin.prepend_fetchers]]
-url   = "*/"
-run   = "git"
-group = "git"
+[plugin]
+preloaders = []
+prepend_fetchers = [
+  { url = "*", run = "git", group = "git" },
+  { url = "*/", run = "git", group = "git" },
+  { url = "zippity://*", run = "zippity", prio = "high", group = "mime" },
+]
+prepend_previewers = [
+  { mime = "zippity/member", run = "zippity" },
+]
 
 [opener]
 edit = [

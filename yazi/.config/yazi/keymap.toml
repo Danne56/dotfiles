@@ -121,3 +121,113 @@ desc = "Archive selected files (compression level)"
 on   = [ "c", "a", "u" ]
 run  = "plugin compress -phl"
 desc = "Archive selected files (password+header+level)"
+
+[[mgr.prepend_keymap]]
+on = "l"
+run = "plugin zippity -- enter"
+desc = "Enter folder or archive; preview member"
+
+[[mgr.prepend_keymap]]
+on = "L"
+run = "plugin zippity -- auto-preview"
+desc = "Toggle archive previews; forward outside archives"
+
+[[mgr.prepend_keymap]]
+on = "<Right>"
+run = "plugin zippity -- enter"
+desc = "Enter folder or archive; preview member"
+
+[[mgr.prepend_keymap]]
+on = "h"
+run = "plugin zippity -- leave"
+desc = "Leave folder or nested archive"
+
+[[mgr.prepend_keymap]]
+on = "<Left>"
+run = "plugin zippity -- leave"
+desc = "Leave folder or nested archive"
+
+[[mgr.prepend_keymap]]
+on = "<A-a>"
+run = "plugin zippity -- menu"
+desc = "Archive actions"
+
+[[mgr.prepend_keymap]]
+on = "<A-f>"
+run = "plugin zippity -- search"
+desc = "Search archive member paths"
+
+[[mgr.prepend_keymap]]
+on = "<A-t>"
+run = "plugin zippity -- check"
+desc = "Verify archive integrity"
+
+[[mgr.prepend_keymap]]
+on = "<A-e>"
+run = "plugin zippity -- edit"
+desc = "Begin archive edit session"
+
+[[mgr.prepend_keymap]]
+on = "<A-s>"
+run = "plugin zippity -- save"
+desc = "Save archive changes"
+
+[[mgr.prepend_keymap]]
+on = "<A-d>"
+run = "plugin zippity -- discard"
+desc = "Discard archive changes"
+
+[[mgr.prepend_keymap]]
+on = "<A-n>"
+run = "plugin zippity -- create"
+desc = "Create archive from selection"
+
+[[mgr.prepend_keymap]]
+on = "<A-z>"
+run = "plugin zippity -- quick"
+desc = "Quick compress with the last settings"
+
+[[mgr.prepend_keymap]]
+on = "<A-x>"
+run = "plugin zippity -- extract"
+desc = "Extract whole archives beside them"
+
+[[mgr.prepend_keymap]]
+on = "<A-p>"
+run = "plugin zippity -- preview"
+desc = "Preview archive member"
+
+[[mgr.prepend_keymap]]
+on = "<A-u>"
+run = "plugin zippity -- unlock"
+desc = "Set archive password"
+
+[[mgr.prepend_keymap]]
+on = "<A-l>"
+run = "plugin zippity -- lock"
+desc = "Forget password and remove member cache"
+
+[[mgr.prepend_keymap]]
+on = "p"
+run = "plugin zippity -- paste"
+desc = "Paste files or extract archive members"
+
+[[mgr.prepend_keymap]]
+on = "P"
+run = "plugin zippity -- paste-force"
+desc = "Paste or extract with overwrite"
+
+[[mgr.prepend_keymap]]
+on = "x"
+run = "plugin zippity -- cut"
+desc = "Cut outside archives"
+
+[[mgr.prepend_keymap]]
+on = "q"
+run = "plugin zippity -- quit"
+desc = "Clean member caches and quit"
+
+[[mgr.prepend_keymap]]
+on = "Q"
+run = "plugin zippity -- quit-no-cwd"
+desc = "Clean member caches and quit without changing directory"

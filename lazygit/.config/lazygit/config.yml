@@ -1,0 +1,5 @@
+git:
+  diffRenderers:
+    - command: delta --{{colorScheme}} --paging=never --keep-plus-minus-markers --file-style=omit --hunk-header-style=omit --minus-style='red' --plus-style='green' --zero-style='white' --minus-emph-style='bold red darkred' --plus-emph-style='bold green darkgreen'
+    - type: rawGit
+      name: default

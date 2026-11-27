@@ -24,6 +24,7 @@ path=(
   ~/.symfony5/bin
   "${XDG_CONFIG_HOME:-$HOME/.config}/composer/vendor/bin"
   "${XDG_CONFIG_HOME:-$HOME/.config}/scripts"
+  ~/.cache/.bun/bin
   $path
 )
 
@@ -165,6 +166,18 @@ function clear-screen-and-scrollback() {
 zle -N clear-screen-and-scrollback
 bindkey '^l' clear-screen-and-scrollback
 
+yazi_pick_path() {
+  local file=$(yazi --chooser-file=>(cat))
+
+  [[ -z "$file" ]] && zle redisplay && return
+
+  LBUFFER+="\"$file\""
+  zle redisplay
+}
+
+zle -N yazi_pick_path
+bindkey '\ey' yazi_pick_path
+
 # Hotkey string insertions
 bindkey -s '^Xgc' 'git commit -m ""\C-b'
 bindkey -s '^Xgp' 'git push origin '
@@ -177,6 +190,7 @@ bindkey -s '^Xdd' 'docker compose down'
 # --- Integrations ---
 source <(fzf --zsh)
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(atuin init zsh --disable-up-arrow)"
 
 # --- Aliases & Functions ---
 [[ -f "$HOME/.config/shell/alias" ]]    && source "$HOME/.config/shell/alias"
